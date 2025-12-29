@@ -1,4 +1,8 @@
 export function render(element: any, container: HTMLElement) {
+  if (typeof element === "string" || typeof element === "number") {
+    container.appendChild(document.createTextNode(String(element)));
+    return;
+  }
   const dom =
     element.type === "TEXT_ELEMENT"
       ? document.createTextNode("")
@@ -12,6 +16,12 @@ export function render(element: any, container: HTMLElement) {
       dom[property] = element.props[property];
     });
 
-  element.props.children.forEach((child: any) => render(child, dom));
+  const children = element.props?.children;
+  if (Array.isArray(children)) {
+    children.forEach((child: any) => render(child, dom));
+  } else if (children != null) {
+    render(children, dom);
+  }
+
   container.appendChild(dom);
 }
