@@ -1,6 +1,9 @@
-export type CreateElement = {
-  type: string;
-  props: any;
+export type Props = {
+  children?: Array<unknown>;
+  [key: string]: unknown;
 };
 
-export type Render = (element: any, container: HTMLElement) => void;
+export type Element = {
+  type: string;
+  props: Props;
+};
