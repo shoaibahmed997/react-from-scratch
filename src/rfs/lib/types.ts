@@ -13,7 +13,7 @@ export type Element = {
 export type Fiber = {
   type: ElementType;
   props: Props;
-  dom: HTMLElement | null;
+  dom: HTMLElement | Text | null;
   parent: Fiber | null;
   child: Fiber | null;
   sibling: Fiber | null;
