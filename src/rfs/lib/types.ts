@@ -3,16 +3,18 @@ export type Props = {
   [key: string]: unknown;
 };
 
+export type ElementType = string | ((props: Props) => Element);
+
 export type Element = {
-  type: string;
+  type: ElementType;
   props: Props;
 };
 
 export type Fiber = {
-  type: string;
+  type: ElementType;
   props: Props;
   dom: HTMLElement | null;
-  parent: Fiber;
-  child?: Fiber;
-  sibling?: Fiber;
+  parent: Fiber | null;
+  child: Fiber | null;
+  sibling: Fiber | null;
 };
