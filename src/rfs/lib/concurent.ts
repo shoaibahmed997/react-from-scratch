@@ -8,11 +8,6 @@ function performUnitOfWork(fiber: Fiber) {
     fiber.dom = createDom(fiber);
   }
 
-  if (fiber.parent) {
-    // @ts-expect-error shhhh....
-    fiber.parent.dom.appendChild(fiber.dom);
-  }
-
   const elements = fiber.props.children || [];
   let index = 0;
   let prevSibling = null;
