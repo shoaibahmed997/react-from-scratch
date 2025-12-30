@@ -8,6 +8,13 @@ export function render(element: any, container: HTMLElement) {
   // }
   // container.appendChild(dom);
 
+  let wipRoot = {
+    dom: container,
+    props: {
+      children: [element],
+    },
+  };
+
   nextUnitOfWork = {
     dom: container,
     props: {
