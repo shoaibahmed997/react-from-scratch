@@ -1,13 +1,15 @@
-import { createDom } from "./dom";
+import { performUnitOfWork } from "./fiber";
 import { Element, Fiber } from "./types";
 
 /** 
 module-scoped singletonsone shared instance per loaded module (per module realm). Any import that reads/changes them sees the same mutable value (they are live bindings).
 Mutable and shared across the app where the module is loaded, so they behave like shared global state for that module.
 */
+export let currentRoot: Fiber | null = null;
 export let wipRoot: Fiber | null = null;
 export let nextUnitOfWork: Fiber | null = null;
 export let wipFiber: Fiber | null = null;
+export let deletions: Array<Fiber> = [];
 const FRAME_LENGTH: number = 5;
 export function render({
   element,
@@ -27,7 +29,10 @@ export function render({
     dom: container,
     sibling: null, // -> root node can't have siblings
     child: null, // -> but why ??? maybe child is used for something else ?
+    alternate: currentRoot, // -> used for diffing old and new fiber trees
   };
+
+  deletions = [];
 
   nextUnitOfWork = wipRoot;
   scheduleNextIteration();
@@ -70,23 +75,6 @@ function workLoop(currentTime = performance.now()): void {
 
   //TODO: why are we scheduling work here ?
   scheduleNextIteration();
-}
-
-// performs a single fiber. so far by my understanding it creates a dom for a fiber. and select the next fiber for work
-// the way it selects is  traverse to child -> when child finishes -> work upwards and create dom for siblings -> keep going up until the root node.
-function performUnitOfWork({ fiber }: { fiber: Fiber }): Fiber | null {
-  if (!fiber.dom) {
-    fiber.dom = createDom({ fiber });
-  }
-  if (fiber.child) return fiber.child;
-
-  let nextFiber: Fiber | null = fiber;
-  while (nextFiber) {
-    if (nextFiber.sibling) return nextFiber.sibling;
-    return nextFiber.parent;
-  }
-
-  return null;
 }
 
 function commitRoot(): void {}
