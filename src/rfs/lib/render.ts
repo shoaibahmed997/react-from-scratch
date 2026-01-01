@@ -78,3 +78,15 @@ function workLoop(currentTime = performance.now()): void {
 }
 
 function commitRoot(): void {}
+
+export function setWipRoot({ newWipRoot }: { newWipRoot: Fiber | null }): void {
+  wipRoot = newWipRoot;
+}
+
+export function setWipFiber({
+  newWipFiber,
+}: {
+  newWipFiber: Fiber | null;
+}): void {
+  wipFiber = newWipFiber;
+}

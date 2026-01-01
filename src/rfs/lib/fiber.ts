@@ -1,6 +1,6 @@
 import { createDom } from "./dom";
 import { Fiber, Element, Props } from "./types";
-import { deletions } from "./render";
+import { deletions, setWipFiber } from "./render";
 
 // performs a single fiber. so far by my understanding it creates a dom for a fiber. and select the next fiber for work
 // the way it selects is  traverse to child -> when child finishes -> work upwards and create dom for siblings -> keep going up until the root node.
@@ -31,7 +31,7 @@ export function performUnitOfWork({ fiber }: { fiber: Fiber }): Fiber | null {
 }
 
 function updateFunctionComponent({ fiber }: { fiber: Fiber }): void {
-  // setwipfiber
+  setWipFiber({ newWipFiber: fiber });
   // resetwipfiberhooks
 
   const children = [(fiber.type as (props: Props) => Element)(fiber.props)];
