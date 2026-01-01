@@ -17,4 +17,6 @@ export type Fiber = {
   parent: Fiber | null;
   child: Fiber | null;
   sibling: Fiber | null;
+  alternate: Fiber | null;
+  effectTag?: "UPDATE" | "DELETION" | "PLACEMENT";
 };
